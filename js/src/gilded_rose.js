@@ -60,14 +60,9 @@ class Shop {
   }
 
   updateItemQuality(item) {
-    if (item.name === 'Sulfuras, Hand of Ragnaros') {
-      item.quality = updateQualityStrategies[item.name](item);
-    } else if (item.name === 'Aged Brie') {
-      item.quality = updateQualityStrategies[item.name](item);
-    } else if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
-      item.quality = updateQualityStrategies[item.name](item);
-    } else {
-      item.quality = updateQualityStrategies._(item);
-    }
+    let strategy = updateQualityStrategies[item.name];
+    let defaultStrategy = updateQualityStrategies._;
+
+    item.quality = (strategy || defaultStrategy)(item);
   }
 }
