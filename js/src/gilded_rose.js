@@ -8,6 +8,9 @@ class Item {
 
 const updateQualityStrategies = {
   'Sulfuras, Hand of Ragnaros': item => item.quality,
+  'Aged Brie': (item) => item.quality + 1,
+  // 'Backstage passes to a TAFKAL80ETC concert': (item) => item.quality + 1,
+  // _: (item) => item.quality - 1
 }
 
 class DeprecableItem extends Item {
@@ -52,11 +55,7 @@ class Shop {
   updateItemQuality(item) {
     if (item.name === 'Sulfuras, Hand of Ragnaros') {
       item.quality = updateQualityStrategies[item.name](item);
-    } else if (item.name !== 'Aged Brie' && item.name !== 'Backstage passes to a TAFKAL80ETC concert') {
-      if (item.quality > 0) {
-        item.quality = item.quality - 1;
-      }
-    } else {
+    } else if (item.name === 'Aged Brie' || item.name === 'Backstage passes to a TAFKAL80ETC concert') {
       if (item.quality < 50) {
         item.quality = item.quality + 1;
         if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
@@ -71,6 +70,10 @@ class Shop {
             }
           }
         }
+      }
+    } else {
+      if (item.quality > 0) {
+        item.quality = item.quality - 1;
       }
     }
   }
