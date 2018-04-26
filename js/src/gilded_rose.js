@@ -10,7 +10,11 @@ const MAX_QUALITY = 50;
 
 const updateQualityStrategies = {
   'Sulfuras, Hand of Ragnaros': item => item.quality,
-  'Aged Brie': item => item.quality < MAX_QUALITY ? item.quality + 1 : item.quality,
+  'Aged Brie': item => {
+    if (item.quality >= MAX_QUALITY) return MAX_QUALITY;
+    if (item.sellIn < 0) return item.quality + 2;
+    return item.quality + 1;
+  },
   'Backstage passes to a TAFKAL80ETC concert': item => {
     if (item.quality >= MAX_QUALITY) return MAX_QUALITY;
     if (item.sellIn < 6) return Math.min(item.quality + 3, MAX_QUALITY);
@@ -20,7 +24,8 @@ const updateQualityStrategies = {
   _: item => item.quality > 0 ? item.quality - 1 : item.quality
 }
 
-const updateSellinStrategies = {
+const updateSellInStrategies = {
+  'Sulfuras, Hand of Ragnaros': item => item.sellIn,
   _: item => item.quality > 0 ? item.sellIn - 1 : item.sellIn
 }
 
@@ -45,7 +50,9 @@ class Shop {
   }
 
   updateItemSellIn(item) {
-    if (item.name != 'Sulfuras, Hand of Ragnaros') {
+    if (item.name === 'Sulfuras, Hand of Ragnaros') {
+      item.sellIn = updateSellInStrategies[item.name](item);
+    } else {
       item.sellIn = item.sellIn - 1;
     }
     if (item.sellIn < 0) {
@@ -58,10 +65,6 @@ class Shop {
           }
         } else {
           item.quality = item.quality - item.quality;
-        }
-      } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1;
         }
       }
     }
