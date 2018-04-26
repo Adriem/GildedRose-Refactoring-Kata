@@ -6,9 +6,11 @@ class Item {
   }
 }
 
+const MAX_QUALITY = 50;
+
 const updateQualityStrategies = {
   'Sulfuras, Hand of Ragnaros': item => item.quality,
-  // 'Aged Brie': (item) => item.quality + 1,
+  'Aged Brie': (item) => item.quality < MAX_QUALITY ? item.quality + 1 : item.quality,
   // 'Backstage passes to a TAFKAL80ETC concert': (item) => item.quality + 1,
   _: (item) => item.quality > 0 ? item.quality - 1 : item.quality
 }
@@ -55,7 +57,9 @@ class Shop {
   updateItemQuality(item) {
     if (item.name === 'Sulfuras, Hand of Ragnaros') {
       item.quality = updateQualityStrategies[item.name](item);
-    } else if (item.name === 'Aged Brie' || item.name === 'Backstage passes to a TAFKAL80ETC concert') {
+    } else if (item.name === 'Aged Brie') {
+      item.quality = updateQualityStrategies[item.name](item);
+    } else if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
       if (item.quality < 50) {
         item.quality = item.quality + 1;
         if (item.name === 'Backstage passes to a TAFKAL80ETC concert') {
