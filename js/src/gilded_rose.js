@@ -8,9 +8,9 @@ class Item {
 
 const updateQualityStrategies = {
   'Sulfuras, Hand of Ragnaros': item => item.quality,
-  'Aged Brie': (item) => item.quality + 1,
+  // 'Aged Brie': (item) => item.quality + 1,
   // 'Backstage passes to a TAFKAL80ETC concert': (item) => item.quality + 1,
-  // _: (item) => item.quality - 1
+  _: (item) => item.quality > 0 ? item.quality - 1 : item.quality
 }
 
 class DeprecableItem extends Item {
@@ -72,9 +72,7 @@ class Shop {
         }
       }
     } else {
-      if (item.quality > 0) {
-        item.quality = item.quality - 1;
-      }
+      item.quality = updateQualityStrategies._(item);
     }
   }
 }
