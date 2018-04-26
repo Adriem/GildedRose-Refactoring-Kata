@@ -16,6 +16,7 @@ const updateQualityStrategies = {
     return item.quality + 1;
   },
   'Backstage passes to a TAFKAL80ETC concert': item => {
+    if (item.sellIn < 0) return 0;
     if (item.quality >= MAX_QUALITY) return MAX_QUALITY;
     if (item.sellIn < 6) return Math.min(item.quality + 3, MAX_QUALITY);
     if (item.sellIn < 11) return Math.min(item.quality + 2, MAX_QUALITY);
@@ -63,8 +64,6 @@ class Shop {
               item.quality = item.quality - 1;
             }
           }
-        } else {
-          item.quality = item.quality - item.quality;
         }
       }
     }
