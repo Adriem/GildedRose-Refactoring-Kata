@@ -31,7 +31,7 @@ const updateQualityStrategies = {
 
 const updateSellInStrategies = {
   'Sulfuras, Hand of Ragnaros': item => item.sellIn,
-  _: item => item.quality > 0 ? item.sellIn - 1 : item.sellIn
+  _: item => item.sellIn - 1
 }
 
 class Shop {
@@ -55,21 +55,9 @@ class Shop {
   }
 
   updateItemSellIn(item) {
-    if (item.name === 'Sulfuras, Hand of Ragnaros') {
-      item.sellIn = updateSellInStrategies[item.name](item);
-    } else {
-      item.sellIn = item.sellIn - 1;
-    }
-    // if (item.sellIn < 0) {
-    //   if (item.name != 'Aged Brie') {
-    //     if (item.name != 'Backstage passes to a TAFKAL80ETC concert') {
-    //       if (item.quality > 0) {
-    //         if (item.name != 'Sulfuras, Hand of Ragnaros') {
-    //           item.quality = item.quality - 1;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+    let strategy = updateSellInStrategies[item.name];
+    let defaultStrategy = updateSellInStrategies._;
+
+    item.sellIn = (strategy || defaultStrategy)(item);
   }
 }
